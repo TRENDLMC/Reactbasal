@@ -28,12 +28,28 @@ function App() {
     }
     content=<Article title={title} body={body}  ></Article>
     //article의 내용을 id를 기준으로 가져온 title과 body의값을 출력시킨다.
-    contextControl=<li><a href={'/update/'+id} onClick={event=>{
+    contextControl=<>
+    {/* react의경우 <>의 경우 그룹화를 뜻함 즉 thml에서는 name을 같게만들어주는것과같은효과  */}
+    <li><a href={'/update/'+id} onClick={event=>{
       event.preventDefault();
       setmode('Update');
     }}>Update</a></li>
-    //contextcontrol값을 변경시킨다. update같은경우는 변경할값이있을때만 실행되어야하기떄문에 welcome모드에서는
-    //출력되지않고 read의 값을 받으면 contextcontrol의값을설정하여 출력되게만든다.
+    {/* //contextcontrol값을 변경시킨다. update같은경우는 변경할값이있을때만 실행되어야하기떄문에 welcome모드에서는
+    //출력되지않고 read의 값을 받으면 contextcontrol의값을설정하여 출력되게만든다. */}
+    <li><input type='button' value='Delete' onClick={()=>{
+      //버튼을 누르면 선택한아이디를 제외한 id를 모두 검색하여 newtopics에 값을 다저장함
+      //저장한값을 settopisc에 저장시키면 값이 달라지므로 비교후 입력된id를 제외한 모든값을 저장함
+      //그후 모드를usestate를사용하여 welcome으로 변경시켜 reload시켜 페이지를 재실행시킴 
+      const newtopics=[];
+      for(let i=0; i<topics.length;i++){
+        if(id !== topics[i].id){
+          newtopics.push(topics[i]);
+        }
+        settopics(newtopics);
+        setmode('WELCOME');
+      }
+    }}/></li>
+    </>
   }else if(mode==='Create'){
     content=<Create onCerate={(_title,_body)=>{
       //<Create를 실행시켜서 값인 onCeate를 props로 create에넘겨줌
@@ -41,7 +57,7 @@ function App() {
     //Create에서 받은 값을 입력해줌 id값은 위에 전역변수로 선언된값을 사용 
     const newtopics=[...topics]
     //원시타입이아닌 배열과 obj같은경우는값을 usestate의 set을 사용하기위해서는
-    //복제본을 만들어서 값을 추가해준뒤 set해주어야 값을 비교하여 다르면 저장한다
+    //복제본을 만들어서 값을 추가해준뒤 set해주어야 값을 비교하여 다르면 저장한다sdsdsdd
     //복제본은 ...을 찍고 변수의이름을 적으면 복제된다 
     newtopics.push(newtopic);
     settopics(newtopics);
